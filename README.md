@@ -56,6 +56,8 @@ Install-Module -Name LAPS -Repository PSGallery
 Install-PSResource -Name LAPS -Repository PSGallery
 ```
 
+> **Coming Soon**: This module will be published to the PowerShell Gallery shortly.
+
 ## Quick Start
 
 ```powershell
