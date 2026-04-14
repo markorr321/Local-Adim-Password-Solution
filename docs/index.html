@@ -12,15 +12,15 @@
         }
 
         :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --bg-card-hover: rgba(255, 255, 255, 0.08);
-            --text-primary: #e6edf3;
-            --text-secondary: rgba(230, 237, 243, 0.7);
-            --text-muted: rgba(230, 237, 243, 0.4);
-            --accent-start: #1a5276;
-            --accent-end: #2e86c1;
+            --bg-primary: #0a0f0d;
+            --bg-secondary: #111a16;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --text-primary: #e0ede6;
+            --text-secondary: rgba(224, 237, 230, 0.7);
+            --text-muted: rgba(224, 237, 230, 0.4);
+            --accent-start: #0d9668;
+            --accent-end: #34d399;
             --border: rgba(255, 255, 255, 0.08);
             --code-bg: rgba(255, 255, 255, 0.06);
         }
@@ -62,8 +62,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 0%, rgba(26, 82, 118, 0.2) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 50%, rgba(46, 134, 193, 0.1) 0%, transparent 50%);
+            background: radial-gradient(ellipse at 50% 0%, rgba(13, 150, 104, 0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(52, 211, 153, 0.08) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -121,11 +121,11 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
             color: white;
-            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.3);
+            box-shadow: 0 4px 20px rgba(13, 150, 104, 0.3);
         }
 
         .btn-primary:hover {
-            box-shadow: 0 6px 30px rgba(46, 134, 193, 0.45);
+            box-shadow: 0 6px 30px rgba(52, 211, 153, 0.4);
         }
 
         .btn-secondary {
@@ -186,7 +186,7 @@
 
         .feature-card:hover {
             background: var(--bg-card-hover);
-            border-color: rgba(46, 134, 193, 0.2);
+            border-color: rgba(52, 211, 153, 0.2);
         }
 
         .feature-icon {
@@ -241,7 +241,7 @@
         }
 
         .screenshot-card:hover {
-            border-color: rgba(46, 134, 193, 0.3);
+            border-color: rgba(52, 211, 153, 0.3);
             transform: translateY(-2px);
         }
 
