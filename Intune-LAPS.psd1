@@ -5,7 +5,7 @@
     RootModule = 'Intune-LAPS.psm1'
 
     # Version number
-    ModuleVersion = '1.0.1'
+    ModuleVersion = '1.0.2'
 
     # ID used to uniquely identify this module
     GUID = 'b2c3d4e5-f6a7-8901-bcde-f12345678901'
@@ -46,20 +46,7 @@
 
             ProjectUri = 'https://github.com/markorr321/Intune-LAPS'
 
-            ReleaseNotes = @'
-## 1.0.1
-- Fix script path reference after module rename (LAPS.ps1 -> Intune-LAPS.ps1)
-
-## 1.0.0
-- Initial release
-- Interactive TUI for LAPS password retrieval
-- Device search by name with Entra ID
-- Password display with base64 decoding
-- Copy password to clipboard
-- Browser-based authentication via MSAL
-- Custom app registration support (Configure-LAPS)
-- Cross-platform support (Windows, macOS, Linux)
-'@
+            ReleaseNotes = "1.0.2 - Update version display in TUI header, fix manifest issue. 1.0.1 - Fix script path reference after module rename. 1.0.0 - Initial release with interactive TUI, device search, password retrieval, clipboard copy, MSAL auth, custom app registration, cross-platform support."
 
             Prerelease = ''
 
@@ -67,11 +54,12 @@
         }
     }
 }
+
 # SIG # Begin signature block
 # MIIsCQYJKoZIhvcNAQcCoIIr+jCCK/YCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCvWq3LWKRQE3rc
-# he9vNIBeOkIbXqB25VgpcBQYF9zx7aCCJRowggVvMIIEV6ADAgECAhBI/JO0YFWU
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCK/c2QhdcpLXE8
+# 3JXeNr4mst6cUTBoqSGgrvWucL8VcKCCJRowggVvMIIEV6ADAgECAhBI/JO0YFWU
 # jTanyYqJ1pQWMA0GCSqGSIb3DQEBDAUAMHsxCzAJBgNVBAYTAkdCMRswGQYDVQQI
 # DBJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcMB1NhbGZvcmQxGjAYBgNVBAoM
 # EUNvbW9kbyBDQSBMaW1pdGVkMSEwHwYDVQQDDBhBQUEgQ2VydGlmaWNhdGUgU2Vy
@@ -274,33 +262,33 @@
 # bGljIENvZGUgU2lnbmluZyBDQSBSMzYCEQCHhLy033IHJHcT2MBMhnD0MA0GCWCG
 # SAFlAwQCAQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcN
 # AQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUw
-# LwYJKoZIhvcNAQkEMSIEIPtCqoil9EvxmbME+QKoFl1vWYxo2elMgJ1RRLSdqHC2
-# MA0GCSqGSIb3DQEBAQUABIICAENXONsue1iAFMiOAXoRzh/vbyg/6pctLhTBt9at
-# JOMFgx08ZLOV9M5Najm5ohlenpZtWCtXqHlyvYvZe1MyC8ZcFn8RbNQX4HKWseqE
-# W7M/eXa9d/NlfHrVLhv8Vdir8wjxTtCCxIvQJT1mKWmVRq2u8bOMgRDFJEE07wM4
-# tndUrAdiu4nTOioHUX+iFSgN2T+xLgb+AiDnDqmKmYk5rYomFfma/ZaSqMp6jvXC
-# mpyuHMoGlcJW2+Ug+rpQuIieZ5maa3H52htpn4zENV/ghQ8yDOG3Q5bwp0bpJ4uz
-# /ul2JUqFL5qi5wbBBsPFpVhSkIFj+JPGRoU03xJ3m3Hd8nVKXcWJsMDCKIoK3qwz
-# JPkuBhM6tRrYNy36BtWqU051galngLH5AYHRkB4rrDh9/ni5kASbmVPRtJj3J4VM
-# 8k/wQDR9sVQVHd1xNgUnaDjLtZc164+fEdIZyVzgMTDoi1JjzQF233bqQoWFlWww
-# aDg1eYHOX1nqa6PuNA3uDZd+AGi4R6X4J3inH7v3SSDOJo76KBAgQQptF8PNhs6a
-# WMMBHxClQWbjpzFtPpG/B/JX3s7qQ2Gka2jxQPMLgnSZcH2m+UpngGBiljUSu8jW
-# 8ABuMtktEQON9TV9m3DWajkEPcnKx4sz5+eg+I2gXsozb5PDJ2c0u5p/nG4Tufm6
-# K5o4oYIDJjCCAyIGCSqGSIb3DQEJBjGCAxMwggMPAgEBMH0waTELMAkGA1UEBhMC
+# LwYJKoZIhvcNAQkEMSIEIAlC45wrWNCrynotIc78RJ/ZQLpOul5sVpmykFasGpb4
+# MA0GCSqGSIb3DQEBAQUABIICACdpek0HprGkmN0+PaxukzB/PPlpre77bqDb1Ygv
+# igX7B6gu/g4fzfsXFLonq8eMQYYXDJnzzbAYKDRt4fEGD0HBefpyr6x2RKlY4/dL
+# 0fDuvIq16fo4YkEPN+818U+ZqpMJDglJJhEg4HLNGlMJ1aGO0euYgAo3RW9ZFK3J
+# YvJYqNXxE8z9gYxP+JLNzJhRyM3vQNTSf5xsMeHmlJ6NUbJ5H85Pdp221JXYYkJJ
+# nDVKGqvyfVJqhU/zYUfO/eg2dMDb5+X1rI+9bsiUryAt5hkkMaQOGxVL86EkCdCH
+# aD8CQf0nMrGkdKdJS1t8aND9KCt4VJKQTP2KdaVXMpwtcCYqTaKArtW375GuB4qI
+# u8rJuzLC3W+PKvi45mqHNmg++cij2e0N/mCyy1a/H39TtUcjR9He7wouvCsVbxpk
+# ea21suHbLOwnngQlcrTCS92mxTJlXljoXVZIov0yh9GY3XgxzBf/5wBYmHGA5n1t
+# op8Gr/acajO969bfTzRDVuitq1qMGwB9kh0oJpA34eZaPdYsGTfKrnUui1YRA/iV
+# S+9PglfotfjLk+Ppes81gnt/TVH3A1a3GX2ns2lOG9jcTBXGPyhnbopjv9JF5GoF
+# +/uei4Z6ILhg2EJo8wHo2MX/BrsroQIlALBCJcVTekj7+tNV0yshjU6UgDbte9MY
+# 18nioYIDJjCCAyIGCSqGSIb3DQEJBjGCAxMwggMPAgEBMH0waTELMAkGA1UEBhMC
 # VVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMUEwPwYDVQQDEzhEaWdpQ2VydCBU
 # cnVzdGVkIEc0IFRpbWVTdGFtcGluZyBSU0E0MDk2IFNIQTI1NiAyMDI1IENBMQIQ
 # CoDvGEuN8QWC0cR2p5V0aDANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3DQEJAzEL
-# BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQxNDEwNTUyNFowLwYJKoZI
-# hvcNAQkEMSIEIMtfKgnvMkgwjuNYe69qNXr19ftmkKyMEGKOtHWRiTO2MA0GCSqG
-# SIb3DQEBAQUABIICACZI1WSPMWWEq+jCbHkrl+dB5KjpoC2G0GkvA+jK9lX72IiG
-# TvNjo3ytM9Op6+YWF0kfKO6sjD1LPJ1BTXztwNopgYmfoVM+kBzyfP3NUg2p3kgz
-# 6lY1d+hoSNXosI8A3+JOS+lKxdtapcALujNd36YApehQn7oCo1WS2+WHQTvjwI4N
-# YONG2o5urztBN2Rmt76zR3Yn6I5Z2ebzPtL12Tm+TuRxOXuhVUqTOoLDfH75LXog
-# GoX3V3CXJDevLnYFSqjXOzTNlZkKssDtmxhw7cLEddCEOByB+4rpnRweFOmkzD8W
-# eofDBApLU/NlNsJoHlsfttlYOkXjvDGblAeAaWXYG11F+l4HS8PZQCEHQI3nYsf8
-# KZt6r3hJ2IsP37kMXvJ7Tz5LnAAkIGl6ZYP5w+1vEVYUINUGRv8IKmgFazPnVItE
-# 3repf8qJ8NHVgx1a6wXzZhesxxSlfNQ5b9iuPNsk9f4Sn+wjO0CwSYEd1eI6GANt
-# SiT5lJc9RmZFz0XBFX8WreEKNnOpCzKeJDf9LWDzLpfNrBuZHk5GsGBfU5vyj3BB
-# 3CnBmYSGrkRLemYIMMivdbbUIfkwOraiUe7mHPlkuQWstFte7TETjrMQR5h+3Jno
-# D32kKPSUw5J6Pk6ZxKI29RUEzQFmQk491wsOEPomA31WkHZ2eEHpH3MfUGJz
+# BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQxNDExMDI1NVowLwYJKoZI
+# hvcNAQkEMSIEIEE0tJtfVY9WJUnCzgrrB2E88wonjl1KhHAwmdse3DZ2MA0GCSqG
+# SIb3DQEBAQUABIICAHWt/wadkmR9XqZA5JSjhZO0+PMNvPVMSYShWDmDXMIbesWB
+# 4sdeFB3xU7zJBKXWKxmlyh4MgbD7yHqNdsAnTWmXZ9WjyDDw6CoEcZkf91ZhW8o4
+# CjgTqHT8XTUs7kGZ0R7o/vfT/glDZ8KlVgzPbI2pARbYpUiAPb5IqyMSbf/G4pqM
+# TMABziFXK4Ubb9HOz8Qm++ow6kUxxZW2RUwhMfjRdYqyQkkrEPBM3Lw4Cjml1EQB
+# IL7KOy1/OdGXsBpsIjYhjF3zy+PvYbJpQQhqaTpvLf9XD5FobP6+lrWs2fLSRTVr
+# m+83ieaS23GLNqLDBQNKLQShE0Izy6bunouEbdEIgq1hsgq6UNQyLlqswIm3DWUV
+# 3O9XJ6qcEblNnTn9UD5g52p8Wd1lt4j+aji+lcA2oj9vKLTc1juM9dST9lcVdcNQ
+# 6E41aAX/IhEKkMXUODjAsGOemWX3W5AdKlIKjX9kxH6C6MxY01ErOX+MTjpgzRJy
+# 0KsMiriieOPNchpcJtrXuQP91yM1NN/oZosCNDUsZKTMhooXLMasfPAJGj8OUDBH
+# iGLdU1wbuHg49zgBycgg/uu0LNTCeyVjkiPDOgJZAodRPYRH+peeHC0mxPA2Wy8n
+# HiTmpRG/5IXN3oSYuBXWqa0pktJh8/begLuolhPB9OHrfeb1RhB2+ddO+EKM
 # SIG # End signature block
