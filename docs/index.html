@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAPS - Local Administrator Password Solution with PowerShell</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.08);
+            --text-primary: #e6edf3;
+            --text-secondary: rgba(230, 237, 243, 0.7);
+            --text-muted: rgba(230, 237, 243, 0.4);
+            --accent-start: #1a5276;
+            --accent-end: #2e86c1;
+            --border: rgba(255, 255, 255, 0.08);
+            --code-bg: rgba(255, 255, 255, 0.06);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--accent-end);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(26, 82, 118, 0.2) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(46, 134, 193, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-brand {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            letter-spacing: 6px;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .hero-sub {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            color: white;
+            box-shadow: 0 4px 20px rgba(26, 82, 118, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 30px rgba(46, 134, 193, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .version-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        section {
+            padding: 3.5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(46, 134, 193, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .demo-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+        }
+
+        .demo-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .demo-wrapper img {
+            width: 100%;
+            display: block;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .screenshot-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .screenshot-card:hover {
+            border-color: rgba(46, 134, 193, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            display: block;
+        }
+
+        .screenshot-label {
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: white;
+            opacity: 0.7;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .lightbox-close:hover {
+            opacity: 1;
+        }
+
+        .quickstart-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            scroll-margin-top: 1rem;
+        }
+
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            font-family: 'Cascadia Code', 'Fira Code', 'SF Mono', Consolas, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .code-block .comment {
+            color: #6a9955;
+        }
+
+        .code-block .command {
+            color: #dcdcaa;
+        }
+
+        .code-block .string {
+            color: #ce9178;
+        }
+
+        .code-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .code-steps {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .code-step {
+            margin-bottom: 1.5rem;
+        }
+
+        .shortcuts-table {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        .shortcuts-table th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .shortcuts-table td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .shortcuts-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .key {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.15rem 0.5rem;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .permission-group h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .permission-group ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .permission-group li {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 0.35rem 0;
+        }
+
+        .permission-group li::before {
+            content: '>';
+            color: var(--accent-end);
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-end);
+        }
+
+        @media (max-width: 640px) {
+            section {
+                padding: 3rem 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .hero {
+                min-height: 80vh;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            .permissions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-brand">[ L A P S ]</div>
+        <h1 class="hero-tagline">Retrieve and rotate LAPS passwords from your terminal.</h1>
+        <p class="hero-sub">Search devices, view credentials, copy to clipboard, rotate on demand &mdash; one PowerShell command.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="document.querySelector('.quickstart-section').scrollIntoView()">Install Now</button>
+            <a href="https://github.com/markorr321/Local-Adim-Password-Solution" class="btn btn-secondary">GitHub</a>
+        </div>
+        <div class="version-badge">v1.0.0 &middot; PowerShell 7.0+</div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Features</h2>
+        <p class="section-subtitle">Everything you need to manage LAPS passwords, in one tool.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F50D;</div>
+                <h3>Device Search</h3>
+                <p>Search Entra ID devices by name with real-time results. Arrow-key navigation through matching devices with OS, trust type, and status details.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F511;</div>
+                <h3>Password Retrieval</h3>
+                <p>Retrieve LAPS local admin credentials via Microsoft Graph. Displays account name, decoded password, and last rotation timestamp.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F4CB;</div>
+                <h3>Clipboard Copy</h3>
+                <p>Copy passwords directly to clipboard with Ctrl+C from the result screen. Visual confirmation so you know it worked.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F504;</div>
+                <h3>On-Demand Rotation</h3>
+                <p>Trigger immediate LAPS password rotation for Intune-managed devices with a confirmation prompt. New password appears after device check-in.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F6E1;</div>
+                <h3>Secure by Design</h3>
+                <p>Browser-based MSAL authentication on every launch. JWT scope validation warns immediately if required permissions are missing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F310;</div>
+                <h3>Cross-Platform</h3>
+                <p>Works on Windows, macOS, and Linux. Platform-aware keyboard shortcuts and terminal handling across all environments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x2328;</div>
+                <h3>Interactive TUI</h3>
+                <p>Navigate with arrow keys, dynamic control bar that follows your actions, and inline prompts. Clean, focused terminal experience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F4E6;</div>
+                <h3>Zero Config</h3>
+                <p>Auto-installs required MSAL libraries on first run. No app registration needed to get started, or bring your own for full control.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#x1F527;</div>
+                <h3>Custom App Registration</h3>
+                <p>Optionally configure a dedicated app registration with Configure-LAPS. Credentials persist as environment variables across sessions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-section">
+        <h2 class="section-title">See It in Action</h2>
+        <p class="section-subtitle">Full workflow &mdash; authentication, device search, password retrieval, and clipboard copy.</p>
+        <div class="demo-wrapper">
+            <img src="../Screenshots/LAPS.gif" alt="LAPS Demo">
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-subtitle">The interactive console experience.</p>
+        <div class="screenshots-grid">
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-2.webp" alt="Launch and Authentication">
+                <div class="screenshot-label">Launch &amp; Authentication</div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-3.webp" alt="Search for a Device">
+                <div class="screenshot-label">Device Search</div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-4.webp" alt="Device Selection">
+                <div class="screenshot-label">Device Selection</div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-5.webp" alt="Password Retrieved">
+                <div class="screenshot-label">Password Retrieved</div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-6.webp" alt="Copy to Clipboard">
+                <div class="screenshot-label">Copy to Clipboard</div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this.querySelector('img'))">
+                <img src="../Screenshots/Step-8.webp" alt="Disconnect from Graph">
+                <div class="screenshot-label">Disconnect from Graph</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quickstart-section">
+        <h2 class="section-title">Quick Start</h2>
+        <p class="section-subtitle">Up and running in two commands.</p>
+        <div class="code-steps">
+            <div class="code-step">
+                <div class="code-label">Install</div>
+                <div class="code-block">Install-Module -Name LAPS -Repository PSGallery</div>
+            </div>
+            <div class="code-step">
+                <div class="code-label">Run</div>
+                <div class="code-block">Start-LAPS</div>
+            </div>
+            <div class="code-step">
+                <div class="code-label">Optional: Custom App Registration</div>
+                <div class="code-block"><span class="comment"># Configure once, use anytime</span><br>Configure-LAPS</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Keyboard Shortcuts</h2>
+        <p class="section-subtitle">Navigate the TUI with ease.</p>
+        <table class="shortcuts-table">
+            <thead>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="key">&#8593; &#8595;</span></td>
+                    <td>Navigate device list</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Enter</span></td>
+                    <td>Select / Confirm</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl+C</span></td>
+                    <td>Copy password to clipboard</td>
+                </tr>
+                <tr>
+                    <td><span class="key">R</span></td>
+                    <td>Rotate password</td>
+                </tr>
+                <tr>
+                    <td><span class="key">S</span></td>
+                    <td>New search</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Esc</span></td>
+                    <td>Go back</td>
+                </tr>
+                <tr>
+                    <td><span class="key">Ctrl+Q</span></td>
+                    <td>Disconnect &amp; exit</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2 class="section-title">API Permissions</h2>
+        <p class="section-subtitle">Required delegated permissions for your app registration.</p>
+        <div class="permissions-grid">
+            <div class="permission-group">
+                <h3>Password Retrieval</h3>
+                <ul>
+                    <li>Device.Read.All</li>
+                    <li>DeviceLocalCredential.Read.All</li>
+                </ul>
+            </div>
+            <div class="permission-group">
+                <h3>Password Rotation (Optional)</h3>
+                <ul>
+                    <li>DeviceManagementManagedDevices.PrivilegedOperations.All</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/markorr321/Local-Adim-Password-Solution">GitHub</a>
+            <a href="https://www.powershellgallery.com/packages/LAPS">PowerShell Gallery</a>
+            <a href="https://github.com/markorr321/Local-Adim-Password-Solution/blob/main/LICENSE">License</a>
+        </div>
+        <p>by Mark Orr</p>
+    </footer>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox(); event.stopPropagation();">&#215;</button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        function openLightbox(img) {
+            var lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-img').alt = img.alt;
+            lb.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
