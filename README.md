@@ -1,4 +1,4 @@
-# LAPS
+# Intune-LAPS
 
 PowerShell module for retrieving and managing Microsoft LAPS (Local Administrator Password Solution) credentials from Entra ID devices via Microsoft Graph API. Features an interactive TUI for device search, password retrieval, clipboard copy, and on-demand password rotation. Browser-based authentication with optional custom app registration support. Cross-platform compatible with **Windows**, **macOS**, and **Linux**. Just run `Start-LAPS` — works out of the box with no configuration, or bring your own app registration for full control.
 
@@ -47,13 +47,13 @@ PowerShell module for retrieving and managing Microsoft LAPS (Local Administrato
 ### Using PowerShellGet
 
 ```powershell
-Install-Module -Name LAPS -Repository PSGallery
+Install-Module -Name Intune-LAPS -Repository PSGallery
 ```
 
 ### Using PSResourceGet
 
 ```powershell
-Install-PSResource -Name LAPS -Repository PSGallery
+Install-PSResource -Name Intune-LAPS -Repository PSGallery
 ```
 
 > **Coming Soon**: This module will be published to the PowerShell Gallery shortly.

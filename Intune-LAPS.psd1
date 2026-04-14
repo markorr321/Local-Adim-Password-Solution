@@ -1,8 +1,8 @@
 @{
-    # Module manifest for LAPS
+    # Module manifest for Intune-LAPS
 
     # Script module associated with this manifest
-    RootModule = 'LAPS.psm1'
+    RootModule = 'Intune-LAPS.psm1'
 
     # Version number
     ModuleVersion = '1.0.0'
@@ -40,11 +40,11 @@
     # Private data
     PrivateData = @{
         PSData = @{
-            Tags = @('LAPS', 'Entra', 'Azure', 'Identity', 'Security', 'MicrosoftGraph', 'LocalAdmin', 'Password', 'CrossPlatform', 'TUI')
+            Tags = @('Intune-LAPS', 'LAPS', 'Intune', 'Entra', 'Azure', 'Identity', 'Security', 'MicrosoftGraph', 'LocalAdmin', 'Password', 'CrossPlatform', 'TUI')
 
-            LicenseUri = 'https://github.com/markorr321/LAPS/blob/main/LICENSE'
+            LicenseUri = 'https://github.com/markorr321/Intune-LAPS/blob/main/LICENSE'
 
-            ProjectUri = 'https://github.com/markorr321/LAPS'
+            ProjectUri = 'https://github.com/markorr321/Intune-LAPS'
 
             ReleaseNotes = @'
 ## 1.0.0
